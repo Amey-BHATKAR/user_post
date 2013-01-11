@@ -1,10 +1,13 @@
 UserPost::Application.routes.draw do
 
- resources :users
 
-  root to: 'static_pages#home'
-  #match '/user', to: 'static_pages#home'
+  root to: 'sessions#new'
+  resources :users
+  resources :sessions, only: [:new, :create, :destroy]
+
   match '/signup',  to: 'users#new'
+  match '/signin',  to: 'sessions#new'
+  match '/signout', to: 'sessions#destroy', via: :delete
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
