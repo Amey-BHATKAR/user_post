@@ -29,10 +29,24 @@ describe User do
   it { should respond_to(:password) }
   it { should respond_to(:password_confirmation) }
   it { should respond_to(:remember_token) }
+  it { should respond_to(:admin) }
   it { should respond_to(:authenticate) }
+  it { should respond_to(:post) }
+  it { should respond_to(:feed) }
 
   it { should be_valid }
+  it { should_not be_admin }
 
+  describe "with admin attribute set to 'true'" do
+    before do
+      @user.save!
+      @user.toggle!(:admin)
+    end
+
+    it { should be_admin }
+  end
+
+  
   describe "when name is not present" do
   	before { @user.name = " " }
   	it { should_not be_valid }
@@ -71,6 +85,16 @@ describe User do
     end
   end
 
+  #For email downcasing validation test
+  describe "email address with mixed case" do
+    let(:mixed_case_email) { "Foo@ExAMPle.CoM" }
+
+    it "should be saved as all lower-case" do
+      @user.email = mixed_case_email
+      @user.save
+      @user.reload.email.should == mixed_case_email.downcase
+    end
+  end
 
   #Uniqueness validation test
   describe "when email address is already taken" do
@@ -123,9 +147,44 @@ describe User do
     end
   end
 
-    describe "remember token" do
-      before { @user.save }
-      its(:remember_token) { should_not be_blank }
+  describe "remember token" do
+    before { @user.save }
+    its(:remember_token) { should_not be_blank }
+  end
+
+  #Posts Association test
+  describe "post associations" do
+
+    before { @user.save }
+    let!(:older_post) do 
+      FactoryGirl.create(:post, user: @user, created_at: 1.day.ago)
+    end
+    let!(:newer_post) do
+      FactoryGirl.create(:post, user: @user, created_at: 1.hour.ago)
     end
 
+    it "should have the right posts in the right order" do
+      @user.posts.should == [newer_post, older_post]
+    end
+
+    #Destroying associated posts test
+    it "should destroy associated posts" do
+      posts = @user.posts.dup
+      @user.destroy
+      posts.should_not be_empty
+      posts.each do |post|
+        Post.find_by_id(post.id).should be_nil
+      end
+    end
+
+    describe "status" do
+      let(:unfollowed_post) do
+        FactoryGirl.create(:post, user: FactoryGirl.create(:user))
+      end
+
+      its(:feed) { should include(newer_post) }
+      its(:feed) { should include(older_post) }
+      its(:feed) { should_not include(unfollowed_post) }
+    end
+  end
 end

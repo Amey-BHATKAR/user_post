@@ -1,2 +1,26 @@
 <% provide(:title, @user.name) %>
-<h1><%= @user.name %></h1>
+
+  
+<!-- -->
+  <% if signed_in? %>
+  <div class="row">
+    <aside class="span4">
+      <section>
+        <%= render 'shared/user_info' %>
+      </section>
+      <section>
+        <%= render 'shared/post_form' %>
+      </section>
+    </aside>
+  </div>
+  <% end %>
+  <div class="span8">
+    <% if @user.posts.any? %>
+      <h3>Posts (<%= @user.posts.count %>)</h3>
+      <ol class="posts">
+        <%= render @posts %>
+      </ol>
+      
+    <% end %>
+  </div>
+</div>
