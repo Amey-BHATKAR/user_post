@@ -12,6 +12,7 @@ FactoryGirl.define do
 
   factory :post do
     content "Lorem ipsum"
+    title "E Pluribus Enum"
     user
   end
 end

@@ -29,7 +29,14 @@ class User < ActiveRecord::Base
     	# This is preliminary. See "Following users" for the full implementation.
     	Post.where("user_id = ?", id)
   	end
-
+  	
+  	def self.search(search)
+  		if search
+    		find(:all, :conditions => ['name LIKE ?', "%#{search}%"])
+  		else
+    		find(:all)
+  		end
+	end
 	private
 
     	def create_remember_token
