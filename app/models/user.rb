@@ -10,6 +10,7 @@
 #
 
 class User < ActiveRecord::Base
+	#acts_as_solr :fields => [:user, :name, :email]
 	attr_accessible :name, :email, :password, :password_confirmation
 	has_secure_password
 	has_many :posts, dependent: :destroy
@@ -30,13 +31,13 @@ class User < ActiveRecord::Base
     	Post.where("user_id = ?", id)
   	end
   	
-  	def self.search(search)
-  		if search
-    		find(:all, :conditions => ['name LIKE ?', "%#{search}%"])
-  		else
-    		find(:all)
-  		end
-	end
+  	#def self.search(search)
+  		#if search
+    	#	find(:all, :conditions => ['name LIKE ?', "%#{search}%"])
+  	#	else
+    	#	find(:all)
+  	#	end
+	#end
 	private
 
     	def create_remember_token

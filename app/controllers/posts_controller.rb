@@ -16,7 +16,12 @@ class PostsController < ApplicationController
       #my_file.write "text to be written to file"
       # Close the file.
       #my_file.close
-
+      # Save a string to a file.
+     # Save a string to a file.
+      myStr = params[:post][:content]
+      aFile = File.new("C:/Users/adyb/Desktop/OldProj/myString.txt", "w")
+      aFile.write(myStr)
+      aFile.close
       redirect_to root_url
     else
       @feed_items = []
@@ -24,14 +29,38 @@ class PostsController < ApplicationController
     end
   end
 
-  def index
-    @posts = Post.search(params[:search])
-  end
-  #def edit
+  #def  show
+   # respond_to do |show|
+   #   show.html
+   # end
+
   #end
 
+  def search
+    if params[:query]
+      @posts = Post.all.find(params[:query])
+    else
+      @posts = []
+    end
+end
+
+  def show
+    @user = User.find(params[:id])
+    @posts = Post.all
+  end
+
+  def index
+    @posts = Post.all
+  end
+  
   def edit
+    @post = Post.find(params[:id])  
+    #admin_or_owner_required(@post.user.id) 
+  end
+
+  def update
     #@user = User.find(params[:id])
+    @post = Post.find(params[:id])  
     if @post.update_attributes(params[:post])
       flash[:success] = "Post updated"
       sign_in @user

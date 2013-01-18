@@ -1,0 +1,7 @@
+<% if @posts.nil? %>
+        <span>There were no results for your query</span><br/><br/>
+<% else %>
+<% for post in @posts %>
+Result: <% post.title %>
+<% end %>
+<% end %>

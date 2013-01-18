@@ -1,0 +1,14 @@
+<% provide(:title, 'All posts') %>
+<form action='/search'>
+<input name="query" type="text" />
+<input type='submit' value='Search' <%= render 'search' %>/>
+
+</form>
+<h1>All Posts(<%= @posts.count %>)</h1>
+
+<ol class="posts">
+	
+  <!--% @users.each do |user| %-->
+    <%= render 'posts' %>
+  <!--% end %-->
+</ol>

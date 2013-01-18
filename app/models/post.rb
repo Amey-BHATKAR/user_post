@@ -1,18 +1,15 @@
 class Post < ActiveRecord::Base
-	attr_accessible :content, :title
+	#acts_as_solr :fields => [:post, :content, :title]
+  attr_accessible :content, :title
 	belongs_to :user
 	
 	validates :content, presence: true
 	validates :title, presence: true, length: { maximum: 160 }
-  	validates :user_id, presence: true
+  validates :user_id, presence: true
   	
-  	def self.search(search)
-  		if search
-    		find(:all, :conditions => ['name LIKE ?', "%#{search}%"])
-  		else
-    		find(:all)
-  		end
-	end
+  	#def self.search(search)
+  	#	 Post.find_by_solr(search)
+	 # end
 
   	default_scope order: 'posts.created_at DESC'
 end

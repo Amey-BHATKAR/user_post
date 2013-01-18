@@ -1,0 +1,7 @@
+<% if @users.empty? %>
+        <span>There were no results for your query</span><br/><br/>
+<% else %>
+<% for user in @users %>
+Result: <% link_to user.name, user %>
+<% end %>
+<% end %>
