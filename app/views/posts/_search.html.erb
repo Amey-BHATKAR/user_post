@@ -1,7 +1,12 @@
-<% if @posts.nil? %>
+<% if params[:query].empty? %>
         <span>There were no results for your query</span><br/><br/>
 <% else %>
-<% for post in @posts %>
-Result: <% post.title %>
+	Result: <% for post in @posts.find(params[:query]) %>
+	<!--% @posts.find(params[:query]) do |post| %-->
+	<h5><span class="title"><%= post.title %></span></h5>
+  	<span class="content"><%= post.content %></span>
+  	<!--% end %-->
+  	<% end %>
+  <!--% render 'show' %-->
 <% end %>
-<% end %>
+<!--% end %-->

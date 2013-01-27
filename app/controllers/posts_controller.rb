@@ -1,6 +1,6 @@
 #require 'open-uri'
 class PostsController < ApplicationController
-  before_filter :signed_in_user, only: [:create, :edit, :destroy]
+  before_filter :signed_in_user, only: [:search, :index, :create, :edit, :destroy]
   before_filter :correct_user,   only: [:edit, :destroy]
 
 
@@ -19,7 +19,10 @@ class PostsController < ApplicationController
       # Save a string to a file.
      # Save a string to a file.
       myStr = params[:post][:content]
-      aFile = File.new("C:/Users/adyb/Desktop/OldProj/myString.txt", "w")
+      #fileName = ""
+      #fileName = params[:user][:name] + "_" + params[:user][:id] 
+      fileName = "#{current_user.name}_#{current_user.id}_#{params[:post][:id]}"
+      aFile = File.new("C:/Users/adyb/Desktop/OldProj/#{fileName}.txt", "w")
       aFile.write(myStr)
       aFile.close
       redirect_to root_url
@@ -37,12 +40,9 @@ class PostsController < ApplicationController
   #end
 
   def search
-    if params[:query]
-      @posts = Post.all.find(params[:query])
-    else
-      @posts = []
-    end
-end
+    @users = User.all
+    @posts = Post.all
+  end
 
   def show
     @user = User.find(params[:id])

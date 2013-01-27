@@ -12,6 +12,16 @@ class UsersController < ApplicationController
     end
   end
 
+  def search
+    #if params[:query]
+     # @users = User.all.find(params[:query])
+   # else
+    #  @users = []
+  #  end
+  @users = User.all
+    #@posts = Post.all
+  end
+
   def index
     #@users = User.search(params[:search])
     @users = User.all

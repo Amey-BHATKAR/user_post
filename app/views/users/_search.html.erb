@@ -1,7 +1,11 @@
 <% if @users.empty? %>
         <span>There were no results for your query</span><br/><br/>
 <% else %>
-<% for user in @users %>
-Result: <% link_to user.name, user %>
-<% end %>
+<!--% for user in @users  %-->
+Result: <% for user in @users.find(params[:query]) %>
+	<!--% @posts.find(params[:query]) do |post| %-->
+	<%= link_to user.name, user %>
+  	<!--% end %-->
+  	<% end %>
+<!--% end %-->
 <% end %>
